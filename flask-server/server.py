@@ -79,7 +79,7 @@ def remove_stopwords():
     for i in range(len(docs)):
         text = docs[i].split()
         docs[i] = " ".join(word for word in text if word.lower() not in stop_words)
-        with open(os.path.join(stop_directory, text_docs[i]), "w") as file:
+        with open(os.path.join(stop_directory, str(text_docs[i])), "w") as file:
             file.write(docs[i])
 
     return jsonify(
@@ -129,9 +129,7 @@ def generate_representation():
     b = text_docs
     for i in range(len(b)):
         b[i] = int(b[i])
-    Binary_rep = vectorizer.fit_transform(docs)
-    non_zero_mask = Binary_rep != 0
-    Binary_rep[non_zero_mask] = 1
+    
 
     # FREQUENCY REPRESENTATION
     df = pd.DataFrame(data, columns=a, index=b)
@@ -148,13 +146,7 @@ def generate_representation():
             labels.append(c)
             i += 1
     
-    # BINARY REPRESENTATION
-    Binary_rep = vectorizer.fit_transform(docs)
-    non_zero_mask = Binary_rep != 0
-    Binary_rep[non_zero_mask] = 1
-    binary_arr = Binary_rep.toarray()
-    bf = pd.DataFrame(binary_arr, columns=a,index=b)
-    bf = df.sort_index()
+   
 
     # Tuning
     test_attributes = set(df.columns)
@@ -165,23 +157,24 @@ def generate_representation():
             attributes.add(line[:-1])
     drop_cols = (test_attributes) - attributes 
     df.drop(drop_cols,axis=1,inplace=True)
-    bf.drop(drop_cols,axis=1,inplace=True)
     add_cols = attributes - test_attributes 
     add_cols = list(add_cols)
-    for i in add_cols:
-        df [i] = 0
-    for i in add_cols:
-        bf [i] = 0
+    # for i in add_cols:
+    #     df [i] = 0
     
+    
+    # sorted_columns = sorted(df.columns)
+    # df = df[sorted_columns]
+    # df['Label'] = labels
+
+    additional_cols = pd.DataFrame(0, index=df.index, columns=add_cols)
+    if not additional_cols.empty:
+        df = pd.concat([df, additional_cols], axis=1)
     sorted_columns = sorted(df.columns)
     df = df[sorted_columns]
-    df['Label'] = labels
+    df[ "Label" ] = labels
 
-    sorted_columns = sorted(bf.columns)
-    bf = bf[sorted_columns]
-    bf['Label'] = labels
-
-    bf.to_csv("Binary_representation.csv")
+    # bf.to_csv("Binary_representation.csv")
     df.to_csv("Frequency_representation.csv")
 
     return jsonify(

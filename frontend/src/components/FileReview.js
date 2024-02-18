@@ -7,6 +7,20 @@ import { toast } from "react-toastify";
 export default function FileReview() {
   const [fileInfo, setFileInfo] = useState(null);
   const navigate = useNavigate();
+  const Preprocessing = async () => {
+    const response1 = await axios.get(
+      "http://localhost:5000/remove_stopwords"
+    );
+    toast.success("Stop words removed");
+    console.log(response1.data);
+
+    const response2 = await axios.get(
+      "http://localhost:5000/perform_stemming"
+    );
+    toast.success("Stemming performed");
+    console.log(response2.data);
+    navigate("/preprocessing")
+  }
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -53,7 +67,7 @@ export default function FileReview() {
             <hr />
             <div className="w-[95%] flex justify-end p-2 m-2">
               <button
-                onClick={() => navigate("/preprocessing")}
+                onClick={() => Preprocessing}
                 type="submit"
                 className="bg-blue-800 hover:bg-blue-900 text-white font-bold py-2 px-2 rounded-xl md:w-[40%] w-[100%] my-4 md:my-0"
               >
