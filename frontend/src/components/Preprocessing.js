@@ -10,24 +10,18 @@ export default function Preprocessing() {
   const dt_methods = ["Without_Descretization", "With_Descretization", "Gaussian"];
   // const knn_methos = ["Euclidean", "Cosine"]
   // const lr_methods = ["Standard Scaling", "Constant Threshold", "Stratified-K_fold"]
+  const algo_sim = {
+    "Decision Tree": ["Without_Descretization", "With_Descretization", "Gaussian"],
+    "KNN": ['Euclidean', 'Cosine'],
+    "MLP": ['2 Layers','3 Layers', '4 Layers'],
+    "Logistic Regression": ['Constant Threshold', 'Stratified K-Fold', 'Guassian']
+  }
   const [selectedalgo, setselectedalgo] = useState("");
   const [selectedsim, setselectedsim] = useState("");
   const navigate = useNavigate();
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response1 = await axios.get(
-          "http://localhost:5000/remove_stopwords"
-        );
-        toast.success("Stop words removed");
-        console.log(response1.data);
-
-        const response2 = await axios.get(
-          "http://localhost:5000/perform_stemming"
-        );
-        toast.success("Stemming performed");
-        console.log(response2.data);
-
         const response3 = await axios.get(
           "http://localhost:5000/generate_representation"
         );
@@ -85,7 +79,7 @@ export default function Preprocessing() {
 
             <div className="flex w-full justify-evenly">
               {" "}
-              {algorithms.map((item, key) => (
+              {Object.keys(algo_sim).map((item, key) => (
                 <div
                   key={key} onClick={() => algor(item)}
                   className=" px-4 py-2 border-[1px] border-blue-400 hover:border-blue-300 font-inter bg-blue-400 hover:bg-blue-300 cursor-pointer rounded-xl duration-200 text-2xl "
@@ -97,11 +91,11 @@ export default function Preprocessing() {
             {simvisible && (
               <>
                 <div className=" text-2xl font-inter text-left w-[80%]">
-                  Similarity Measure:
+                  Method:
                 </div>
                 <div className="flex w-full justify-evenly">
                   {" "}
-                  {dt_methods.map((item, key) => (
+                  {Object.values(algo_sim[selectedalgo]).map((item, key) => (
                     <div onClick={() => simsubmitted(item)}
                       key={key}
                       className=" px-4 py-2 border-[1px] border-blue-400 hover:border-blue-300 font-inter bg-blue-400 hover:bg-blue-300 cursor-pointer rounded-xl duration-200 text-2xl "
