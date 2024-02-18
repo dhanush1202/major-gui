@@ -11,7 +11,7 @@ export default function Dashboard() {
     item: "",
     selectedalgo: "",
     acc: 0,
-    bal_acc: 0,
+    bal_acc: 0, 
     f1_measure:0,
     recall:0,
     precison:0
@@ -49,17 +49,17 @@ export default function Dashboard() {
             <div className="text-lg uppercase font-semibold">results:</div>
             <table className=" w-full h-[70%]">
               <tr>
-                <td className="border-2 w-[33%] text-center">accuracy: {resdata.acc}</td>
+                <td className="border-2 w-[33%] text-center">Accuracy: {resdata.acc}</td>
                 <td className="border-2 w-[33%] text-center">
                   {" "}
-                  balanced accuracy: {resdata.bal_acc}
+                  Balanced_accuracy: {resdata.bal_acc}
                 </td>
-                <td className="border-2 w-[33%] text-center"> f-score: </td>
+                <td className="border-2 w-[33%] text-center">Recall:{resdata.recall}</td>
               </tr>
               <tr>
-                <td className="border-2 w-[33%] text-center">sdkbs:</td>
-                <td className="border-2 w-[33%] text-center"> mhdgus:</td>
-                <td className="border-2 w-[33%] text-center">kjhduysd:</td>
+                <td className="border-2 w-[33%] text-center">F1-score:{resdata.f1_score}</td>
+                <td className="border-2 w-[33%] text-center">Precision:{resdata.precision}</td>
+                <td className="border-2 w-[33%] text-center">Sensitivity:</td>
               </tr>
             </table>
           </div>
