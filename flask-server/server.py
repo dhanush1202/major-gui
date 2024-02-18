@@ -159,7 +159,7 @@ def generate_representation():
     # Tuning
     test_attributes = set(df.columns)
     attributes = set()
-    text_file = r"D:\MAJOR\Outputs\Test\Attributes.txt"
+    text_file = r".\Attributes.txt"
     with open(text_file,'r') as file:
         for line in file:
             attributes.add(line[:-1])
