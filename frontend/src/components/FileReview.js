@@ -67,7 +67,7 @@ export default function FileReview() {
             <hr />
             <div className="w-[95%] flex justify-end p-2 m-2">
               <button
-                onClick={() => Preprocessing}
+                onClick={Preprocessing}
                 type="submit"
                 className="bg-blue-800 hover:bg-blue-900 text-white font-bold py-2 px-2 rounded-xl md:w-[40%] w-[100%] my-4 md:my-0"
               >

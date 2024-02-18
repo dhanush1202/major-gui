@@ -14,6 +14,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.metrics import accuracy_score, classification_report
 from sklearn.metrics.pairwise import rbf_kernel
+from sklearn.metrics import confusion_matrix
 
 import joblib
 
@@ -34,6 +35,7 @@ acc = 0
 precision = 0
 f1_score = 0
 recall = 0
+specificity1 = 0
 
 
 def load_documents():
@@ -234,7 +236,7 @@ def get_extracted_files():
 
 @app.route("/runalgo", methods=["POST"])
 def runalgo():
-    global selectedalgo, item, acc, bal_acc, precision, f1_score, recall
+    global selectedalgo, item, acc, bal_acc, precision, f1_score, recall, specificity1
 
     dt = pd.read_csv("./Frequency_representation.csv", index_col=0)
     Y = dt["Label"]
@@ -268,6 +270,19 @@ def runalgo():
             recall = report['weighted avg']['recall']
             acc = accuracy_score(Y, y_pred)
             bal_acc = balanced_accuracy_score(Y, y_pred)
+
+            cm = confusion_matrix(Y, y_pred)
+            specificity = []
+            for i in range(len(cm)):
+                true_negative = sum(cm[j][i] for j in range(len(cm)) if j != i)
+                false_positive = sum(cm[j][i] for j in range(len(cm)) if j != i)
+                specificity.append(true_negative / (true_negative + false_positive))
+            class_counts = [sum(cm[i]) for i in range(len(cm))]
+            total_samples = sum(class_counts)
+            class_weights = [count / total_samples for count in class_counts]
+            specificity1 = sum(spec * weight for spec, weight in zip(specificity, class_weights))
+
+            
             print(acc, bal_acc)
             return (
                 jsonify(
@@ -280,7 +295,8 @@ def runalgo():
                             "bal_acc": round(bal_acc * 100, 2),
                             "precision" : round(precision, 2),
                             "f1_score" : round(f1_score, 2),
-                            "recall" : round(recall, 2)
+                            "recall" : round(recall, 2),
+                            "specificity":round(specificity1,2)
                         },
                     }
                 ),
@@ -300,6 +316,16 @@ def runalgo():
             acc = accuracy_score(Y, y_pred)
             bal_acc = balanced_accuracy_score(Y, y_pred)
 
+            cm = confusion_matrix(Y, y_pred)
+            specificity = []
+            for i in range(len(cm)):
+                true_negative = sum(cm[j][i] for j in range(len(cm)) if j != i)
+                false_positive = sum(cm[j][i] for j in range(len(cm)) if j != i)
+                specificity.append(true_negative / (true_negative + false_positive))
+            class_counts = [sum(cm[i]) for i in range(len(cm))]
+            total_samples = sum(class_counts)
+            class_weights = [count / total_samples for count in class_counts]
+            specificity1 = sum(spec * weight for spec, weight in zip(specificity, class_weights))
 
             return (
                 jsonify(
@@ -312,7 +338,8 @@ def runalgo():
                             "bal_acc": round(bal_acc * 100, 2),
                             "precision" : round(precision, 2),
                             "f1_score" : round(f1_score, 2),
-                            "recall" : round(recall, 2)
+                            "recall" : round(recall, 2),
+                            "specificity":round(specificity1,2)
                         },
                     }
                 ),
@@ -344,6 +371,17 @@ def runalgo():
             acc = accuracy_score(y_test, y_pred)
             bal_acc = balanced_accuracy_score(y_test, y_pred)
 
+            cm = confusion_matrix(Y, y_pred)
+            specificity = []
+            for i in range(len(cm)):
+                true_negative = sum(cm[j][i] for j in range(len(cm)) if j != i)
+                false_positive = sum(cm[j][i] for j in range(len(cm)) if j != i)
+                specificity.append(true_negative / (true_negative + false_positive))
+            class_counts = [sum(cm[i]) for i in range(len(cm))]
+            total_samples = sum(class_counts)
+            class_weights = [count / total_samples for count in class_counts]
+            specificity1 = sum(spec * weight for spec, weight in zip(specificity, class_weights))
+
             return (
                 jsonify(
                     {
@@ -355,7 +393,8 @@ def runalgo():
                             "bal_acc": round(bal_acc * 100, 2),
                             "precision" : round(precision, 2),
                             "f1_score" : round(f1_score, 2),
-                            "recall" : round(recall, 2)
+                            "recall" : round(recall, 2),
+                            "specificity":round(specificity1,2)
                         },
                     }
                 ),
@@ -420,7 +459,8 @@ def get_results():
         "bal_acc": round(bal_acc * 100, 2),
         "precision" : round(precision, 2),
         "f1_score" : round(f1_score, 2),
-        "recall" : round(recall, 2)
+        "recall" : round(recall, 2),
+        "specificity":round(specificity1,2)
 
     }
     return (

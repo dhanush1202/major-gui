@@ -14,9 +14,10 @@ export default function Dashboard() {
     bal_acc: 0, 
     f1_measure:0,
     recall:0,
-    precison:0
+    precison:0,
+    specificity:0
   };
-  const [resdata, setresdata] = useState({});
+  const [resdata, setresdata] = useState(data);
 
   useEffect(() => {
     async function fetchData() {
@@ -59,7 +60,7 @@ export default function Dashboard() {
               <tr>
                 <td className="border-2 w-[33%] text-center">F1-score:{resdata.f1_score}</td>
                 <td className="border-2 w-[33%] text-center">Precision:{resdata.precision}</td>
-                <td className="border-2 w-[33%] text-center">Sensitivity:ksajfhasijdifks</td>
+                <td className="border-2 w-[33%] text-center">Specificity:{resdata.specificity}</td>
               </tr>
             </table>
           </div>
