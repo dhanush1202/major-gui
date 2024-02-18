@@ -59,7 +59,7 @@ export default function Dashboard() {
               <tr>
                 <td className="border-2 w-[33%] text-center">F1-score:{resdata.f1_score}</td>
                 <td className="border-2 w-[33%] text-center">Precision:{resdata.precision}</td>
-                <td className="border-2 w-[33%] text-center">Sensitivity:</td>
+                <td className="border-2 w-[33%] text-center">Sensitivity:ksajfhasijdifks</td>
               </tr>
             </table>
           </div>
