@@ -1,0 +1,13 @@
+frontend/node_modules
+.vscode
+
+flask-server/venv
+flask-server/AFTER_STEMMING
+flask-server/extracted_files
+flask-server/stop_words_removed
+flask-server/Binary_representation.csv
+flask-server/Frequency_representation.csv
+flask-server/Models/KNN
+
+test-files_703.zip
+flask-server/class_accuracies_graph.png
